@@ -1,10 +1,43 @@
-﻿namespace handling_error
+﻿using System;
+
+namespace ConnectFourGame.Core
 {
-    internal class Program
+    public static class InputHandler
     {
-        static void Main(string[] args)
+        public static int GetValidatedColumnInput(int boardWidth, Func<int, bool> isColumnFull)
         {
-            Console.WriteLine("Hello, World!");
+            while (true)
+            {
+                Console.Write($"Choose a column (0 to {boardWidth - 1}): ");
+                string input = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    Console.WriteLine("⚠️  Input cannot be empty.");
+                    continue;
+                }
+
+                if (!int.TryParse(input, out int column))
+                {
+                    Console.WriteLine("🚫 Invalid input. Please enter a number.");
+                    continue;
+                }
+
+                if (column < 0 || column >= boardWidth)
+                {
+                    Console.WriteLine($"❗ Column must be between 0 and {boardWidth - 1}.");
+                    continue;
+                }
+
+                if (isColumnFull(column))
+                {
+                    Console.WriteLine("🛑 That column is full. Choose another one.");
+                    continue;
+                }
+
+                return column;
+            }
         }
+
     }
 }
