@@ -1,10 +1,19 @@
-﻿namespace ConnectFourGame
+﻿using ConnectFourGame.Core;
+
+namespace ConnectFourGame
 {
-    internal class Program
+    class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            do
+            {
+                Game game = new Game();
+                game.Start();
+            }
+            while (GameMenu.AskToPlayAgain());
+
+            Console.WriteLine("Thanks for playing!");
         }
     }
 }
