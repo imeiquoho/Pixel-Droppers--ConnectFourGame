@@ -4,24 +4,27 @@ namespace ConnectFourGame.Core
 {
     public class HumanPlayer : Player
     {
-        public HumanPlayer(char token) : base(token) { }
+        public HumanPlayer(string name, char token) : base(name, token) { }
 
-        public override int GetMove(Board board)
+        public override int ChooseColumn(Board board)
         {
             int column;
-
             while (true)
             {
-                Console.Write($"Player {Token}, choose a column (0-6): ");
+                Console.Write($"{Name}, enter a column number (0-6): ");
                 string input = Console.ReadLine();
 
-                if (int.TryParse(input, out column))
+                if (int.TryParse(input, out column) && column >= 0 && column <= 6)
                 {
-                    return column;
+                    if (board.CanPlaceToken(column))
+                    {
+                        return column;
+                    }
+                    Console.WriteLine("That column is full. Try a different one.");
                 }
                 else
                 {
-                    Console.WriteLine("⚠️ Invalid input. Please enter a number between 0 and 6.");
+                    Console.WriteLine("Invalid input. Please enter a number between 0 and 6.");
                 }
             }
         }

@@ -1,3 +1,6 @@
+// Player.cs
+using System;
+
 namespace ConnectFourGame.Core
 {
     public abstract class Player

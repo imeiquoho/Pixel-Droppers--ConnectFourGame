@@ -13,7 +13,7 @@ namespace ConnectFourGame.Core
             int column;
             do
             {
-                column = _random.Next(0, 7);
+                column = _random.Next(0, 7);  // random column between 0 and 6
             } while (!board.CanPlaceToken(column));
 
             Console.WriteLine($"{Name} (AI) chooses column {column}");

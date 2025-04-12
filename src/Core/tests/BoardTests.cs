@@ -1,33 +1,36 @@
 using System;
 using ConnectFourGame.Core;
 
-namespace ConnectFourGame.Tests.Core
+namespace ConnectFourGame.Tests
 {
-    public class BoardTests
+    public static class BoardTests
     {
-        public static void TestDropToken()
+        public static void RunTests()
         {
-            var board = new Board();
-            bool result = board.DropToken(0, 'X');
-            Console.WriteLine(result ? "DropToken Test Passed" : "DropToken Test Failed");
-        }
-
-        public static void TestIsFull()
-        {
-            var board = new Board();
-            for (int i = 0; i < 6; i++) board.DropToken(0, 'X');
-            for (int i = 0; i < 7; i++)
-                for (int j = 0; j < 6; j++)
-                    board.DropToken(i, 'O');
-
-            Console.WriteLine(board.IsFull() ? "IsFull Test Passed" : "IsFull Test Failed");
-        }
-
-        public static void RunAll()
-        {
-            TestDropToken();
+            TestCanPlaceToken();
             TestIsFull();
+        }
+
+        private static void TestCanPlaceToken()
+        {
+            Board board = new Board();
+            if (board.CanPlaceToken(0))
+                Console.WriteLine("✅ CanPlaceToken test passed.");
+            else
+                Console.WriteLine("❌ CanPlaceToken test failed.");
+        }
+
+        private static void TestIsFull()
+        {
+            Board board = new Board();
+            for (int col = 0; col < 7; col++)
+                for (int row = 0; row < 6; row++)
+                    board.DropToken(col, 'X');
+
+            if (board.IsFull())
+                Console.WriteLine("✅ IsFull test passed.");
+            else
+                Console.WriteLine("❌ IsFull test failed.");
         }
     }
 }
-

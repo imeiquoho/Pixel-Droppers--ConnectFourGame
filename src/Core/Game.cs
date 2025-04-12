@@ -1,78 +1,42 @@
 using System;
-using ConnectFourGame.src.Core;
 
-namespace ConnectFourGame
+namespace ConnectFourGame.Core
 {
-    public class Game
+    public static class Game
     {
-        private Board board;
-        private Player player1;
-        private Player player2;
-        private Player currentPlayer;
-
-        public Game()
+        public static void Start(Player player1, Player player2)
         {
-            board = new Board();
-            player1 = new HumanPlayer('X');
-            player2 = new AIPlayer('O');
-            currentPlayer = player1;
-        }
+            Board board = new Board();
+            Player currentPlayer = player1;
+            board.DisplayBoard();
 
-        public void Start()
-        {
-            Console.WriteLine("Welcome to Connect Four!");
-            board.Render();
-
-            while (!board.IsFull())
+            while (true)
             {
-                Console.WriteLine($"Player {currentPlayer.Token}'s turn");
-
-                int column = -1;
-                bool validMove = false;
-
-                while (!validMove)
+                int column = currentPlayer.ChooseColumn(board);
+                if (column >= 0 && column < 7 && board.CanPlaceToken(column))
                 {
-                    try
-                    {
-                        column = currentPlayer.GetMove(board);
+                    board.DropToken(column, currentPlayer.Token);
+                    board.DisplayBoard();
 
-                        if (column < 0 || column >= 7)
-                        {
-                            Console.WriteLine("⚠️ Invalid column. Please choose a number between 0 and 6.");
-                            continue;
-                        }
-
-                        if (!board.CanPlaceToken(column))
-                        {
-                            Console.WriteLine("⚠️ That column is full. Please choose a different one.");
-                            continue;
-                        }
-
-                        validMove = true;
-                    }
-                    catch (FormatException)
+                    if (board.CheckWin(currentPlayer.Token))
                     {
-                        Console.WriteLine("⚠️ Invalid input. Please enter a number.");
+                        Console.WriteLine($"\n🎉 {currentPlayer.Name} wins!");
+                        break;
                     }
-                    catch (Exception ex)
+
+                    if (board.IsFull())
                     {
-                        Console.WriteLine($"⚠️ Unexpected error: {ex.Message}");
+                        Console.WriteLine("\nIt's a draw!");
+                        break;
                     }
+
+                    currentPlayer = currentPlayer == player1 ? player2 : player1;
                 }
-
-                board.DropToken(column, currentPlayer.Token);
-                board.Render();
-
-                if (board.CheckWin(currentPlayer.Token))
+                else
                 {
-                    Console.WriteLine($"🎉 Player {currentPlayer.Token} wins!");
-                    return;
+                    Console.WriteLine("Invalid column. Try again.");
                 }
-
-                currentPlayer = (currentPlayer == player1) ? player2 : player1;
             }
-
-            Console.WriteLine("It's a draw!");
         }
     }
 }
