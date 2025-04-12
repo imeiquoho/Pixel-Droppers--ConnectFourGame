@@ -7,10 +7,19 @@ namespace ConnectFourGame
     {
         static void Main(string[] args)
         {
-            Player player1 = new HumanPlayer("Player 1", 'X');
-            Player player2 = new AIPlayer("Computer", 'O');
+            Console.Write("Enter name for Player 1 (X): ");
+            string name1 = Console.ReadLine();
+            Console.Write("Enter name for Player 2 (O): ");
+            string name2 = Console.ReadLine();
 
-            Game.Start(player1, player2);
+            Player player1 = new HumanPlayer(name1, 'X');
+            Player player2 = new HumanPlayer(name2, 'O');
+
+            Game game = new Game();
+            game.Start(player1, player2);
+
+            Console.WriteLine("\nPress Enter to exit...");
+            Console.ReadLine();
         }
     }
 }

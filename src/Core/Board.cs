@@ -31,16 +31,18 @@ namespace ConnectFourGame.Core
             return grid[0, column] == '.';
         }
 
-        public void DropToken(int column, char token)
+        // ✅ Updated: Now returns true/false to indicate success
+        public bool DropToken(int column, char token)
         {
             for (int row = Rows - 1; row >= 0; row--)
             {
                 if (grid[row, column] == '.')
                 {
                     grid[row, column] = token;
-                    break;
+                    return true;
                 }
             }
+            return false;
         }
 
         public bool CheckWin(char token)
