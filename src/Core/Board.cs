@@ -27,5 +27,11 @@ namespace ConnectFourGame.Core
                 Console.WriteLine();
             }
         }
+
+        // ✅ Added for Milestone 5: Checks if a token can be placed in the given column
+        public bool CanPlaceToken(int column)
+        {
+            return grid[0, column] == '.';
+        }
     }
 }
