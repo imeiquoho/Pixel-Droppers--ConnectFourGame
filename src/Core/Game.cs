@@ -26,24 +26,50 @@ namespace ConnectFourGame
             while (!board.IsFull())
             {
                 Console.WriteLine($"Player {currentPlayer.Token}'s turn");
-                int column = currentPlayer.GetMove(board);
 
-                if (board.DropToken(column, currentPlayer.Token))
+                int column = -1;
+                bool validMove = false;
+
+                while (!validMove)
                 {
-                    board.Render();
-
-                    if (board.CheckWin(currentPlayer.Token))
+                    try
                     {
-                        Console.WriteLine($"Player {currentPlayer.Token} wins!");
-                        return;
-                    }
+                        column = currentPlayer.GetMove(board);
 
-                    currentPlayer = (currentPlayer == player1) ? player2 : player1;
+                        if (column < 0 || column >= 7)
+                        {
+                            Console.WriteLine("⚠️ Invalid column. Please choose a number between 0 and 6.");
+                            continue;
+                        }
+
+                        if (!board.CanPlaceToken(column))
+                        {
+                            Console.WriteLine("⚠️ That column is full. Please choose a different one.");
+                            continue;
+                        }
+
+                        validMove = true;
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("⚠️ Invalid input. Please enter a number.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"⚠️ Unexpected error: {ex.Message}");
+                    }
                 }
-                else
+
+                board.DropToken(column, currentPlayer.Token);
+                board.Render();
+
+                if (board.CheckWin(currentPlayer.Token))
                 {
-                    Console.WriteLine("Invalid move. Try again.");
+                    Console.WriteLine($"🎉 Player {currentPlayer.Token} wins!");
+                    return;
                 }
+
+                currentPlayer = (currentPlayer == player1) ? player2 : player1;
             }
 
             Console.WriteLine("It's a draw!");
