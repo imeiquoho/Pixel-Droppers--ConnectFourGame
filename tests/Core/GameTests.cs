@@ -1,4 +1,3 @@
-using System;
 using ConnectFourGame;
 using ConnectFourGame.Core;
 
