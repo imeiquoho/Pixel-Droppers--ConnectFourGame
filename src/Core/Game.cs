@@ -4,13 +4,8 @@ namespace ConnectFourGame.Core
 {
     public class Game
     {
-        private Board board;
+        private Board board = new Board();
         private Player currentPlayer;
-
-        public Game()
-        {
-            board = new Board();
-        }
 
         public void Start(Player player1, Player player2)
         {
@@ -19,15 +14,16 @@ namespace ConnectFourGame.Core
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Current Board:");
                 board.DisplayBoard();
 
                 int column = currentPlayer.ChooseColumn(board);
-                if (column < 0 || column > 6 || !board.DropToken(column, currentPlayer.Token))
+                if (column < 0 || column > 6 || !board.CanPlaceToken(column))
                 {
                     Console.WriteLine("Invalid move. Try again.");
                     continue;
                 }
+
+                board.DropToken(column, currentPlayer.Token);
 
                 if (board.CheckWin(currentPlayer.Token))
                 {
